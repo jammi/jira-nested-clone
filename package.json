@@ -1,0 +1,30 @@
+{
+  "name": "jira-nested-clone",
+  "version": "0.0.1",
+  "engine": "node >= 22.0.0",
+  "description": "Nested cloning of Jira Epics",
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env index.mjs",
+    "test": "npx eslint",
+    "copy-env": "cp env.example .env",
+    "list-fields": "node --env-file=.env bin/list-fields.mjs",
+    "clean": "rm -r node_modules; rm package-lock.json; rm ./cache/*"
+  },
+  "exports": {
+    ".": "./index.mjs",
+    "./*": "./lib/*.mjs"
+  },
+  "imports": {
+    "#internal/*": "./lib/*.mjs"
+  },
+  "author": "Jammi Heinonen <jammi@jammi.pro>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^9.14.0"
+  },
+  "dependencies": {
+    "form-data": "^4.0.1"
+  }
+}
