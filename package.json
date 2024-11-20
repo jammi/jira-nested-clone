@@ -1,6 +1,6 @@
 {
   "name": "jira-nested-clone",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engine": "node >= 22.0.0",
   "description": "Nested cloning of Jira Epics",
   "main": "index.mjs",

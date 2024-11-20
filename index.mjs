@@ -1,19 +1,31 @@
-import { SOURCE_ISSUE_ID, TARGET_PROJECT_KEY } from 'jira-nested-clone/setup';
-import { fetchIssues } from 'jira-nested-clone/issue';
-import { cloneStructure } from 'jira-nested-clone/clone';
-import { logTreeStructure } from 'jira-nested-clone/log';
+import { SOURCE_ISSUE_ID, TARGET_PROJECT_KEY } from './lib/setup.mjs';
+import { fetchIssues } from './lib/issue.mjs';
+import { cloneStructure } from './lib/clone.mjs';
+import { logTreeStructure } from './lib/log.mjs';
 
-// Execute the main function using top-level await
+import { DEBUG_OUTPUT, VERBOSE_OUTPUT } from './lib/parse-env.mjs';
+
 const cache = await fetchIssues(SOURCE_ISSUE_ID);
-// console.log("Cache:", cache);
-console.log("Tree Structure:");
-logTreeStructure(cache, SOURCE_ISSUE_ID);
 
-// Clone the structure and log results
-const clonedRootKey = await cloneStructure(SOURCE_ISSUE_ID, TARGET_PROJECT_KEY, cache);
-console.log(`Cloned Root Key: ${clonedRootKey}`);
+if (VERBOSE_OUTPUT) {
+  console.log("Tree Structure:");
+  logTreeStructure(cache, SOURCE_ISSUE_ID);
+}
 
-// Log the cloned structure
-console.log("Cloned Structure:");
-const cloned = await fetchIssues(clonedRootKey); // Fetch the cloned structure
-logTreeStructure(cloned, clonedRootKey);
+// process.exit();
+
+const { clonedKey } = await cloneStructure(SOURCE_ISSUE_ID, TARGET_PROJECT_KEY, cache);
+
+if (VERBOSE_OUTPUT) {
+  console.log(`Cloned Root Key: ${clonedKey}`);
+}
+else {
+  console.log(clonedKey);
+}
+
+const cloned = await fetchIssues(clonedKey);
+
+if (VERBOSE_OUTPUT) {
+  console.log("Cloned Structure:");
+  logTreeStructure(cloned, clonedKey);
+}
